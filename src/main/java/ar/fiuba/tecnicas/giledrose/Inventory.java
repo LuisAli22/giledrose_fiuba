@@ -2,53 +2,74 @@ package ar.fiuba.tecnicas.giledrose;
 
 public class Inventory {
     private Item[] items;
-    private void updateQualityOutOfConcert(int i) {
-        if (items[i].getSellIn() < 0) {
-            if (items[i].getName() != "Aged Brie") {
-                if (items[i].getName() != "Backstage passes to a TAFKAL80ETC concert") {
-                    if (items[i].getQuality() > 0) {
-                        if (items[i].getName() != "Sulfuras, Hand of Ragnaros") {
-                            items[i].setQuality(items[i].getQuality() - 1);
-                        }
-                    }
-                } else {
-                    items[i].setQuality(items[i].getQuality() - items[i].getQuality());
-                }
-            } else {
-                if (items[i].getQuality() < 50) {
-                    items[i].setQuality(items[i].getQuality() + 1);
-                }
-            }
+    private void updateQualityOutOfConcert(Item item) {
+        if (outOfConcertDecreaseQualityAndQualitvePositiveNonZero(item))  item.setQuality(item.getQuality() - 1);
+        if (isSpecialItemAndIsOutOfConcert(item)) item.setQuality(item.getQuality() - item.getQuality());
+        if (isSingleIncreaseAndIsOutOfConcertAndOkRangeQuality(item)) item.setQuality(item.getQuality() + 1);
+    }
+    private boolean  isSpecialItemAndIsOutOfConcert(Item item){
+        return ((!isSellInInConcert(item))&&(isSpecialItemIncreaseQuality(item)));
+    }
+    private boolean  isSingleIncreaseAndIsOutOfConcertAndOkRangeQuality(Item item){
+        return ((!isSellInInConcert(item))&&(isSingleIncreaseQuality(item))&&(isQualityInRange(item)));
+    }
+    private boolean outOfConcertDecreaseQualityAndQualitvePositiveNonZero(Item item){
+        return ((outOfConcertAndIsItemDecreaseQuality(item))&&(isQualitivePositiveAndNotZero(item)));
+    }
+    private  boolean outOfConcertAndIsItemDecreaseQuality(Item item){
+        return ((!isSellInInConcert(item))&&(isQualityDecrease(item)));
+    }
+    private void updateSellIn(Item item) {
+        if (!isSpecialItemConstQualityConstSellIn(item)) {
+            item.setSellIn(item.getSellIn() - 1);
         }
     }
-
-    private void updateSellIn(int i) {
-        if (items[i].getName() != "Sulfuras, Hand of Ragnaros") {
-            items[i].setSellIn(items[i].getSellIn() - 1);
-        }
+    private boolean isSellInInConcert(Item item){
+        return (item.getSellIn()>=0);
     }
-    private void updateQualityInConcert(int i){
-        if (items[i].getName() != "Aged Brie" && items[i].getName() != "Backstage passes to a TAFKAL80ETC concert") {
-            if (items[i].getQuality() > 0) {
-                if (items[i].getName() != "Sulfuras, Hand of Ragnaros") {
-                    items[i].setQuality(items[i].getQuality() - 1);
-                }
-            }
-        } else {
-            if (items[i].getQuality() < 50) {
-                items[i].setQuality(items[i].getQuality() + 1);
-
-                if (items[i].getName() == "Backstage passes to a TAFKAL80ETC concert") {
-                    if (items[i].getSellIn() < 11) {
-                        if (items[i].getQuality() < 50) {
-                            items[i].setQuality(items[i].getQuality() + 1);
-                        }
-                    }
-
-                    if (items[i].getSellIn() < 6) {
-                        if (items[i].getQuality() < 50) {
-                            items[i].setQuality(items[i].getQuality() + 1);
-                        }
+    private boolean isSpecialItemIncreaseQuality(Item item){
+        return (item.getName() == "Backstage passes to a TAFKAL80ETC concert");
+    }
+    private boolean isSingleIncreaseQuality(Item item){
+        return (item.getName()=="Aged Brie");
+    }
+    private boolean isSpecialItemConstQualityConstSellIn(Item item){
+        return (item.getName() == "Sulfuras, Hand of Ragnaros");
+    }
+    private boolean isQualityDecrease(Item item){
+         return ((!isSingleIncreaseQuality(item)) &&
+                (!isSpecialItemIncreaseQuality(item))&&
+                 (!isSpecialItemConstQualityConstSellIn(item)));
+    }
+    private boolean isQualitivePositiveAndNotZero(Item item){
+        return (item.getQuality()>0);
+    }
+    private boolean isQualityInRange(Item item){
+        return (item.getQuality()<50);
+    }
+    private boolean areLeftTenOrLessExpire(Item item){
+       return (item.getSellIn()<11);
+    }
+    private boolean areLeftFiveOrLessExpire(Item item){
+        return (item.getSellIn()<6);
+    }
+    private boolean tenOreLessToExpireAndOkQualityRange(Item item){
+      return (areLeftTenOrLessExpire(item)&&(isQualityInRange(item)));
+    }
+    private boolean fiveOreLessToExpireAndOkQualityRange(Item item){
+        return (areLeftFiveOrLessExpire(item)&&(isQualityInRange(item)));
+    }
+    private void updateQualityInConcert(Item item){
+        if ((isQualityDecrease(item))&&(isQualitivePositiveAndNotZero(item)))
+            item.setQuality(item.getQuality() - 1);
+        else {
+            if (isQualityInRange(item)) {
+                item.setQuality(item.getQuality() + 1);
+                if (isSpecialItemIncreaseQuality(item)) {
+                    if (tenOreLessToExpireAndOkQualityRange(item))
+                            item.setQuality(item.getQuality() + 1);
+                    if (fiveOreLessToExpireAndOkQualityRange(item)) {
+                            item.setQuality(item.getQuality() + 1);
                     }
                 }
             }
@@ -58,7 +79,6 @@ public class Inventory {
         super();
         this.items = items;
     }
-
     public Inventory() {
         super();
         items = new Item[]{
@@ -71,12 +91,11 @@ public class Inventory {
         };
 
     }
-
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
-            updateQualityInConcert(i);
-            updateSellIn(i);
-            updateQualityOutOfConcert(i);
+            updateQualityInConcert(items[i]);
+            updateSellIn(items[i]);
+            updateQualityOutOfConcert(items[i]);
         }
     }
 }
