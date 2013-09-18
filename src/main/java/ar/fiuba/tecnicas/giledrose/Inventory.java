@@ -62,19 +62,23 @@ public class Inventory {
     private void updateQualityInConcert(Item item){
         if ((isQualityDecrease(item))&&(isQualitivePositiveAndNotZero(item)))
             item.setQuality(item.getQuality() - 1);
-        else {
-            if (isQualityInRange(item)) {
-                item.setQuality(item.getQuality() + 1);
-                if (isSpecialItemIncreaseQuality(item)) {
-                    if (tenOreLessToExpireAndOkQualityRange(item))
-                            item.setQuality(item.getQuality() + 1);
-                    if (fiveOreLessToExpireAndOkQualityRange(item)) {
-                            item.setQuality(item.getQuality() + 1);
-                    }
+        else
+            tryToIncreaseQuality(item);
+    }
+
+    private void tryToIncreaseQuality(Item item) {
+        if (isQualityInRange(item)) {
+            item.setQuality(item.getQuality() + 1);
+            if (isSpecialItemIncreaseQuality(item)) {
+                if (tenOreLessToExpireAndOkQualityRange(item))
+                    item.setQuality(item.getQuality() + 1);
+                if (fiveOreLessToExpireAndOkQualityRange(item)) {
+                    item.setQuality(item.getQuality() + 1);
                 }
             }
         }
     }
+
     public Inventory(Item[] items) {
         super();
         this.items = items;
