@@ -2,7 +2,8 @@ package ar.fiuba.tecnicas.giledrose;
 
 public class DefaultProductBuilder implements ProductBuilder{
     private boolean isCommonProduct(String name){
-        return ((name=="+5 Dexterity Vest") || (name=="Elixir of the Mongoose")||(name=="Conjured Mana Cake"));
+        return ((name.equals(ItemNames.DEXTERVEST.getName())) ||
+                (name.equals(ItemNames.ELIXIR.getName()))||(name.equals(ItemNames.CONJUREDMANA.getName())));
     }
     private Product getCorrectDoubleDecrease(Item item) {
         if (item.getSellIn()>0) return new DoubleDecreaseQualityProduct(item);
@@ -30,13 +31,13 @@ public class DefaultProductBuilder implements ProductBuilder{
         return new ConstantQualityProduct(item);
     }
     private boolean isConstantQualityProduct(String name) {
-        return (name=="Sulfuras, Hand of Ragnaros");
+        return (name.equals(ItemNames.SULFURAS.getName()));
     }
     private boolean isSpecialIncreaseProduct(String name){
-        return (name=="Backstage passes to a TAFKAL80ETC concert");
+        return (name.equals(ItemNames.BACKSTAGE.getName()));
     }
     private boolean isSingleIncreaseProduct(String name) {
-        return (name=="Aged Brie");
+        return (name.equals(ItemNames.AGEDBRIE.getName()));
     }
     @Override
     public Product construct(Item item) {
