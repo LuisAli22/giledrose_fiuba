@@ -188,4 +188,18 @@ public class GiledRoseTest {
         inv.updateQuality();
         assertEquals(0,items[0].getQuality(),0);
     }
+    @Test
+    public void qualityDecreaseConjuredTest() {
+        Item[] items=new Item[]{new Item("Conjured", 2, 50)};
+        Inventory inv=new Inventory(items);
+        inv.updateQuality();
+        assertEquals(48,items[0].getQuality(),0);
+    }
+    @Test
+    public void qualityDecreaseConjuredOutOfConcertTest() {
+        Item[] items=new Item[]{new Item("Conjured", 0, 50)};
+        Inventory inv=new Inventory(items);
+        inv.updateQuality();
+        assertEquals(46,items[0].getQuality(),0);
+    }
 }

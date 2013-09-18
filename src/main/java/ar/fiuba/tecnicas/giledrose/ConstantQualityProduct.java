@@ -14,5 +14,6 @@ public class ConstantQualityProduct extends Product{
     public void update() {
         getQuality().update(getItem());
         if (getItem().getName()=="Backstage passes to a TAFKAL80ETC concert") getItem().setQuality(0);
+        if (getItem().getName()=="Sulfuras, Hand of Ragnaros") getItem().setQuality(80);
     }
 }

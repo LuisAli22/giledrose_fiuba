@@ -11,10 +11,13 @@ public class DecreaseQualityProduct extends Product{
     public boolean isQualitivePositiveAndNotZero(Item item){
         return (item.getQuality()>0);
     }
+    public void checkQualityAndUpdate(){
+        if (!isQualitivePositiveAndNotZero(getItem())) setQuality(new ConstantQuality());
+        getQuality().update(getItem());
+    }
     @Override
     public void update() {
-     if (!isQualitivePositiveAndNotZero(getItem())) setQuality(new ConstantQuality());
-     getQuality().update(getItem());
+     checkQualityAndUpdate();
      getSellIn().update(getItem());
     }
 }

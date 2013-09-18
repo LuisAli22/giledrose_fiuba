@@ -6,7 +6,7 @@ public class DefaultProductBuilder implements ProductBuilder{
     }
     private Product getCorrectDoubleDecrease(Item item) {
         if (item.getSellIn()>0) return new DoubleDecreaseQualityProduct(item);
-        return new ForthDecreaseQualityProduct(item);
+        return new FourthDecreaseQualityProduct(item);
     }
 
     private Product getCorrectIncrease(Item item) {
