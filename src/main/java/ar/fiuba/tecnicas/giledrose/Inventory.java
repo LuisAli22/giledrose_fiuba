@@ -2,9 +2,11 @@ package ar.fiuba.tecnicas.giledrose;
 
 public class Inventory {
     private Item[] items;
+    ProductBuilder pbuilder;
     public Inventory(Item[] items) {
         super();
         this.items = items;
+        pbuilder=new DefaultProductBuilder();
     }
     public Inventory() {
         super();
@@ -16,9 +18,9 @@ public class Inventory {
                 new Item(ItemNames.BACKSTAGE.getName(), 15, 20),
                 new Item(ItemNames.CONJUREDMANA.getName(), 3, 6)
         };
+        pbuilder=new DefaultProductBuilder();
     }
     private void constructProductFromItemAndUpdate(Item item){
-        ProductBuilder pbuilder= new DefaultProductBuilder();
         Product product=pbuilder.construct(item);
         product.update();
     }
