@@ -7,7 +7,6 @@ public class DoubleIncreaseQualityProduct extends IncreaseQualityProduct{
     @Override
     public void update() {
         super.update();
-        if (!isQualityInRange(getItem())) setQuality(new ConstantQuality());
-        getQuality().update(getItem());
+        checkQualityAndUpdate();
     }
 }

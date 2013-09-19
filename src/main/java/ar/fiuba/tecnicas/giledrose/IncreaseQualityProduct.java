@@ -10,9 +10,12 @@ public class IncreaseQualityProduct extends Product{
         return (item.getQuality()<50);
     }
     @Override
+    boolean isOkQuality(Item item){
+        return isQualityInRange(item);
+    }
+    @Override
     public void update() {
-        if (!isQualityInRange(getItem())) setQuality(new ConstantQuality());
-        getQuality().update(getItem());
+        checkQualityAndUpdate();
         getSellIn().update(getItem());
     }
 }

@@ -19,5 +19,15 @@ public abstract class Product {
     public void setQuality(Quality quality){this.quality=quality;}
     public Quality getQuality(){return quality;}
     public Item getItem(){return item;}
+    public boolean isQualitivePositiveAndNotZero(Item item){
+        return (item.getQuality()>0);
+    }
+    public void checkQualityAndUpdate(){
+        if (!isOkQuality(item)) setQuality(new ConstantQuality());
+        getQuality().update(getItem());
+    }
+    boolean isOkQuality(Item item){
+        return isQualitivePositiveAndNotZero(item);
+    }
     public abstract void update();
 }
