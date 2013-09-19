@@ -6,12 +6,9 @@ public class IncreaseQualityProduct extends Product{
         setQuality(new IncreaseQuality());
         setSellIn(new DecreaseSellIn());
     }
-    public boolean isQualityInRange(Item item){
-        return (item.getQuality()<50);
-    }
     @Override
     boolean isOkQuality(Item item){
-        return isQualityInRange(item);
+        return (item.getQuality()<50);
     }
     @Override
     public void update() {
